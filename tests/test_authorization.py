@@ -1,13 +1,13 @@
 from selene import browser, have
-from pages.page_swag_labs import Page_swag_labs
+from pages.login_page import Login_page
 
 
 def test_authorization(open_browser):
 
-    swag_labs_shop = Page_swag_labs()
+    login_page = Login_page()
 
     (
-     swag_labs_shop
+     login_page
      .open_login_page()
      .insert_login('standard_user')
      .insert_password('secret_sauce')

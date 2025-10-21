@@ -1,10 +1,10 @@
 from selene import browser
 
 
-class Page_swag_labs:
+class Login_page:
 
     def open_login_page(self):
-        browser.open('https://www.saucedemo.com/')
+        browser.open('/')
         return self
 
     def insert_login(self,value):
@@ -18,6 +18,7 @@ class Page_swag_labs:
     def click_login_button(self):
         browser.element('#login-button').click()
         return self
+
 
 
 
