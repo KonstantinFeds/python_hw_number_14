@@ -1,4 +1,4 @@
-from selene import browser
+from selene import browser, have
 
 
 class Product_page:
@@ -25,4 +25,8 @@ class Product_page:
 
     def add_red_t_shirt_to_cart(self):
         browser.element('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]').click()
+        return self
+
+    def assert_count_product_to_cart(self,value):
+        browser.element('[data-test="shopping-cart-badge"]').should(have.exact_text(value))
         return self
