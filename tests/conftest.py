@@ -1,13 +1,13 @@
 import pytest
 from selene import browser
+from pages.cart_page import Cart_page
 from pages.login_page import Login_page
 from pages.product_page import Product_page
 
 "Cделать открытие браузера на всю сессию тестов"
 
 
-
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def open_browser():
 
     browser.config.browser_name = 'firefox'
@@ -17,9 +17,8 @@ def open_browser():
     yield browser
     browser.quit()
 
-
-@pytest.fixture()
-def registration():
+@pytest.fixture(scope="session")
+def authorization():
     swag_labs_shop = Login_page()
 
     (
@@ -30,8 +29,7 @@ def registration():
      .click_login_button()
     )
 
-
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def add_products_to_cart():
     product_page = Product_page()
 
@@ -43,4 +41,14 @@ def add_products_to_cart():
      .add_jacket_to_cart()
      .add_red_t_shirt_to_cart()
      .assert_count_product_to_cart('6'))
+
+
+@pytest.fixture(scope="function")
+def product_in_cart():
+
+    cart_page = Cart_page()
+
+    cart_page.go_to_cart()
+    cart_page.count_products_to_cart()
+
 

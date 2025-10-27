@@ -1,7 +1,7 @@
 from pages.product_page import Product_page
 
 
-def test_add_to_cart(open_browser,registration):
+def test_add_to_cart(open_browser,authorization):
     product_page = Product_page()
 
     (product_page
