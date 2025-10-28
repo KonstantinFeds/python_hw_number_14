@@ -1,6 +1,6 @@
 from pages.product_page import Product_page
 
-def test_sorting_price_low_to_high(open_browser,authorization):
+def test_sorting_price_low_to_high(authorization):
 
     product_page = Product_page()
 

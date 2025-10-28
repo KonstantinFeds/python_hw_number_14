@@ -1,8 +1,7 @@
-from selene import browser, have
 from pages.login_page import Login_page
 
 
-def test_authorization(open_browser):
+def test_authorization():
 
     login_page = Login_page()
 
@@ -14,7 +13,7 @@ def test_authorization(open_browser):
      .click_login_button()
     )
 
-    browser.element('.title').should(have.exact_text('Products'))
+    login_page.assert_text_after_login('Products')
 
 
 

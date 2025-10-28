@@ -1,7 +1,7 @@
 from pages.order_page import Order_page
 
 
-def test_checkout_order(open_browser,authorization,add_products_to_cart,product_in_cart):
+def test_checkout_order(authorization,add_products_to_cart,product_in_cart):
     order_page = Order_page()
 
     (

@@ -1,21 +1,17 @@
+import os
+import shutil
+from pathlib import Path
 import pytest
 from selene import browser
+from selenium import webdriver
+from dotenv import load_dotenv
 from pages.cart_page import Cart_page
 from pages.login_page import Login_page
 from pages.product_page import Product_page
+from selenium.webdriver.chrome.options import Options
+from utils import attach
 
-"Cделать открытие браузера на всю сессию тестов"
 
-
-@pytest.fixture(scope="session")
-def open_browser():
-
-    browser.config.browser_name = 'firefox'
-    browser.config.base_url = 'https://www.saucedemo.com'
-    browser.driver.maximize_window()
-
-    yield browser
-    browser.quit()
 
 @pytest.fixture(scope="session")
 def authorization():
@@ -56,5 +52,59 @@ def product_in_cart():
         'Sauce Labs Bike Light',
         'Sauce Labs Fleece Jacket',
         'Test.allTheThings() T-Shirt (Red)')
+
+
+@pytest.fixture(scope="session", autouse=True)
+def clear_allure_results():
+
+    allure_dir = Path("allure-results")
+
+    if allure_dir.exists():
+        shutil.rmtree(allure_dir)
+
+    allure_dir.mkdir(exist_ok=True)
+
+    yield
+
+
+@pytest.fixture(scope="session", autouse=True)
+def open_selenoid():
+        load_dotenv()
+
+        selenoid_login = os.getenv("SELENOID_LOGIN")
+        selenoid_pass = os.getenv("SELENOID_PASS")
+        selenoid_url = os.getenv("SELENOID_URL")
+
+        options = Options()
+        selenoid_capabilities = {
+            "browserName": "firefox",
+            "browserVersion": "124.0",
+            "selenoid:options": {
+                "enableVNC": True,
+                "enableVideo": True,
+            }
+        }
+
+        options.capabilities.update(selenoid_capabilities)
+        driver = webdriver.Remote(
+            command_executor=f"https://{selenoid_login}:{selenoid_pass}@{selenoid_url}/wd/hub",
+            options=options)
+
+        # Настройка Selene браузера
+        browser.config.driver = driver
+        browser.config.base_url = 'https://www.saucedemo.com'
+        driver.maximize_window()
+
+        browser.config.driver = driver
+        yield browser
+
+        attach.add_screenshot(browser)
+        #attach.add_logs(browser)
+        attach.add_html(browser)
+        attach.add_video(browser)
+
+        browser.quit()
+
+
 
 
