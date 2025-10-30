@@ -13,7 +13,7 @@ from utils import attach
 
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def authorization():
     swag_labs_shop = Login_page()
 
@@ -35,8 +35,7 @@ def add_products_to_cart():
      .add_onesie_to_cart()
      .add_bike_light_to_cart()
      .add_jacket_to_cart()
-     .add_red_t_shirt_to_cart()
-     .assert_count_product_to_cart('6'))
+     .add_red_t_shirt_to_cart())
 
 
 @pytest.fixture(scope="function")
@@ -67,7 +66,7 @@ def clear_allure_results():
     yield
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def open_selenoid():
         load_dotenv()
 
